@@ -46,7 +46,11 @@ def main():
     FPSCLOCK = pygame.time.Clock()
     pygame.display.set_caption("Vector Space")
     playerOne = player(PLAYER_POS, BOX_LINELIST)
+    
+    #List that contains all enemies in the game
+    enemyList = []
     testEnemy = vertEnemy((WINDOW_WIDTH/2, 0), VERT_LINELIST)
+    enemyList.append(testEnemy)
 
     # Game Loop
     while True:
@@ -61,9 +65,21 @@ def main():
 
         pygame.event.get() # Clear event queue
 
+        # If enemies reach end of screen, cull them.
+        i = 0
+        for enemy in enemyList:
+            if enemy.getPos()[1] > WINDOW_HEIGHT:
+                enemyList.pop(i)
+                i -= 1
+            i += 1
+
+        # Let us know how many enemies still exist.
+        #print len(enemyList)
+
         # Collision code
-        if doesCollide(playerOne, testEnemy):
-            terminate()
+        for enemy in enemyList:
+            if doesCollide(playerOne, enemy):
+                terminate()
 
         # Player movement code
         pressedKeys = pygame.key.get_pressed()
@@ -85,12 +101,16 @@ def main():
             playerOne.move((-PLAYER_SPEED, 0))
 
         # Enemy movement code
-        testEnemy.move(ENEMY_SPEED)
+        for enemy in enemyList:
+            enemy.move(ENEMY_SPEED)
 
         # Draw code
         DISPLAYSURF.fill(BLACK)
         playerOne.draw()
-        testEnemy.draw()
+
+        # Enemy draw code
+        for enemy in enemyList:
+            enemy.draw()
 
         # Frame & display update code
         pygame.display.update()
