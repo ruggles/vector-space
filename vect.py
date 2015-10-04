@@ -8,7 +8,7 @@ By Nicholas Ruggles
 '''
 
 from __future__ import division
-import pygame, sys
+import pygame, sys, random
 from pygame.locals import *
 
 FPS = 60
@@ -35,6 +35,7 @@ DIAG_LINELIST = [(2, 2, -2, -2)]
 PLAYER_POS = (WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
 PLAYER_SPEED = 2
 ENEMY_SPEED = 2
+FRAME_DIFF = 120
 
 def main():
 
@@ -46,12 +47,11 @@ def main():
     FPSCLOCK = pygame.time.Clock()
     pygame.display.set_caption("Vector Space")
     playerOne = player(PLAYER_POS, BOX_LINELIST)
+    frameCount = 0
     
     #List that contains all enemies in the game
     enemyList = []
-    testEnemy = vertEnemy((WINDOW_WIDTH/2, 0), VERT_LINELIST)
-    enemyList.append(testEnemy)
-
+ 
     # Game Loop
     while True:
 
@@ -73,8 +73,9 @@ def main():
                 i -= 1
             i += 1
 
-        # Let us know how many enemies still exist.
-        #print len(enemyList)
+        if frameCount % FRAME_DIFF == 0:
+            newEnemy = vertEnemy((random.randint(0, WINDOW_WIDTH), 0), VERT_LINELIST)
+            enemyList.append(newEnemy)
 
         # Collision code
         for enemy in enemyList:
@@ -115,6 +116,7 @@ def main():
         # Frame & display update code
         pygame.display.update()
         FPSCLOCK.tick(FPS)
+        frameCount += 1
 
 # Superclass for bullet, enemy, player
 class entity(object):
