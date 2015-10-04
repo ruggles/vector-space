@@ -35,7 +35,8 @@ DIAG_LINELIST = [(2, 2, -2, -2)]
 PLAYER_POS = (WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
 PLAYER_SPEED = 2
 ENEMY_SPEED = 2
-FRAME_DIFF = 120
+FRAME_DIFF = 500
+BASE_DIFF = 0
 
 def main():
 
@@ -47,7 +48,7 @@ def main():
     FPSCLOCK = pygame.time.Clock()
     pygame.display.set_caption("Vector Space")
     playerOne = player(PLAYER_POS, BOX_LINELIST)
-    frameCount = 0
+    frameCount = 1 
     
     #List that contains all enemies in the game
     enemyList = []
@@ -73,7 +74,7 @@ def main():
                 i -= 1
             i += 1
 
-        if frameCount % FRAME_DIFF == 0:
+        if random.random() > (1 - BASE_DIFF - (frameCount/(frameCount + FRAME_DIFF))):
             newEnemy = vertEnemy((random.randint(0, WINDOW_WIDTH), 0), VERT_LINELIST)
             enemyList.append(newEnemy)
 
