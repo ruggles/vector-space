@@ -8,7 +8,7 @@ By Nicholas Ruggles
 '''
 
 from __future__ import division
-import pygame, sys, random
+import pygame, sys, random, time
 from pygame.locals import *
 
 FPS = 60
@@ -40,7 +40,7 @@ BASE_DIFF = 0
 
 def main():
 
-    global DISPLAYSURF, FPSCLOCK    
+    global DISPLAYSURF, FPSCLOCK, STARTTIME    
     
     # Initialize shit    
     pygame.init()
@@ -52,6 +52,9 @@ def main():
     
     #List that contains all enemies in the game
     enemyList = []
+
+    # Game start time
+    STARTTIME = time.time()
  
     # Game Loop
     while True:
@@ -290,6 +293,7 @@ def findIntersect(m1, b1, m2, b2):
     return (x, y)
 
 def terminate():
+    print time.time() - STARTTIME
     pygame.quit()
     sys.exit()
 
